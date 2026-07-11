@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="mimitore">
 <meta name="theme-color" content="#0f1216">
-<title>耳トレ | kedy</title>
+<link rel="apple-touch-icon" href="icon.png">
+<title>mimitore</title>
 <style>
   :root{
     --bg:#0f1216; --card:#171c23; --card2:#1e242d; --card3:#242c37;
@@ -23,7 +25,7 @@
     min-height:100dvh; user-select:none;
   }
   header{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
-  h1{font-size:19px; font-weight:800}
+  h1{font-size:19px; font-weight:800; letter-spacing:.02em}
   h1 span{color:var(--amber)}
   .chips{display:flex; gap:6px}
   .chip{background:var(--card); border:1px solid var(--line); border-radius:20px;
@@ -37,11 +39,17 @@
   .gbar{height:6px; background:var(--card3); border-radius:4px; overflow:hidden}
   .gbar i{display:block; height:100%; background:var(--amber); border-radius:4px; transition:width .3s}
   .gbar i.done{background:var(--green)}
-  .settings{display:flex; gap:8px; margin-bottom:10px}
+  .settings{display:flex; flex-direction:column; gap:8px; margin-bottom:10px}
+  .segrow{display:flex; gap:8px}
   .seg{display:flex; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; flex:1}
   .seg button{flex:1; background:none; border:none; color:var(--sub); font-size:13px; font-weight:700; padding:9px 0; font-family:inherit}
   .seg button.on{background:var(--amber); color:#151006}
   .seg.lv button.on{background:var(--cyan); color:#03242a}
+  .seg.mode button.on{background:var(--green); color:#06210f}
+  .startbtn{width:100%; background:var(--amber); color:#151006; border:none; border-radius:14px;
+    font-family:inherit; font-weight:900; font-size:17px; padding:16px 0; margin-bottom:4px; transition:transform .06s}
+  .startbtn:active{transform:scale(.97)}
+  .poolcap{font-size:11px; color:var(--dim); text-align:center; font-weight:700; margin-bottom:10px}
   .stage{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
     padding:16px 14px 14px; text-align:center; margin-bottom:10px}
   .keyname{font-size:12px; color:var(--sub); font-weight:700; margin-bottom:5px}
@@ -55,10 +63,22 @@
   .pbtn:active{transform:scale(.96)}
   .pbtn.main{background:var(--amber); color:#151006}
   .pbtn.sub{background:var(--card2); color:var(--cyan); border:1px solid var(--line)}
+  .pbtn.ghost{background:var(--card2); color:var(--txt); border:1px solid var(--line)}
+  .pbtn.hide{display:none}
+  .qhead{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+  .qhead .qn{font-size:13px; font-weight:800; white-space:nowrap}
+  .segbar{display:flex; gap:3px; flex:1}
+  .segbar i{flex:1; height:5px; border-radius:3px; background:var(--card3)}
+  .segbar i.d{background:var(--amber)}
+  .segbar i.c{background:var(--cyan)}
+  .endbtn{background:var(--card2); border:1px solid var(--line); color:var(--sub);
+    border-radius:9px; font-family:inherit; font-size:11px; font-weight:800; padding:6px 9px; white-space:nowrap}
   .answers{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px}
+  .answers.g2{grid-template-columns:repeat(2,1fr)}
   .ans{background:var(--card2); border:1px solid var(--line); border-radius:12px; color:var(--txt);
     font-family:inherit; font-size:16px; font-weight:800; padding:12px 0 9px; transition:transform .06s;
     display:flex; flex-direction:column; align-items:center; gap:1px}
+  .answers.g2 .ans{font-size:14px; padding:14px 0}
   .ans small{font-size:9px; color:var(--dim); font-weight:700}
   .ans:active{transform:scale(.94)}
   .ans.hide{display:none}
@@ -73,13 +93,35 @@
   .hint{font-size:11px; color:var(--dim); text-align:center; margin-bottom:10px; font-weight:700}
   .panel{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-bottom:10px}
   .panel h2{font-size:12px; color:var(--sub); font-weight:800; margin-bottom:8px; letter-spacing:.04em}
+  .srow{display:flex; justify-content:space-between; align-items:center; padding:6px 2px;
+    border-bottom:1px solid var(--card3); font-size:12px; font-weight:700}
+  .srow:last-child{border-bottom:none}
+  .srow .l{color:var(--sub)}
+  .srow .r{font-weight:800}
+  .srow .r.hi{color:var(--green)} .srow .r.mid{color:var(--amber)} .srow .r.lo{color:var(--red)}
+  .empty{font-size:12px; color:var(--dim); font-weight:700; text-align:center; padding:6px 0}
   .wrow{display:flex; align-items:center; gap:8px; margin-bottom:5px; font-size:12px; font-weight:700}
-  .wrow .lbl{width:34px}
+  .wrow .lbl{width:74px}
   .wbar{flex:1; height:7px; background:var(--card3); border-radius:4px; overflow:hidden}
   .wbar i{display:block; height:100%; background:var(--cyan); border-radius:4px}
   .wbar i.low{background:var(--red)}
   .wbar i.mid{background:var(--amber)}
   .wrow .pct{width:66px; text-align:right; color:var(--sub); font-size:11px}
+  .score{text-align:center; padding:14px 0 6px}
+  .score .pctbig{font-size:46px; font-weight:900; line-height:1}
+  .score .pctbig.hi{color:var(--green)} .score .pctbig.mid{color:var(--amber)} .score .pctbig.lo{color:var(--red)}
+  .score .sub2{font-size:13px; color:var(--sub); font-weight:700; margin-top:6px}
+  .rrow{display:flex; align-items:center; gap:10px; padding:9px 2px; border-bottom:1px solid var(--card3);
+    font-size:13px; font-weight:700}
+  .rrow:last-child{border-bottom:none}
+  .rrow:active{background:var(--card2)}
+  .rrow .no{width:20px; color:var(--dim); font-size:11px}
+  .rrow .mk{width:22px}
+  .rrow .tx b{color:var(--txt)}
+  .rrow .tx small{display:block; font-size:11px; color:var(--red); font-weight:700}
+  .rrow .sp{margin-left:auto; color:var(--dim); font-size:11px}
+  .rbtns{display:flex; flex-direction:column; gap:8px; margin-top:12px}
+  .rbtns .pbtn{max-width:none; width:100%}
   .calnav{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
   .calnav button{background:var(--card2); border:1px solid var(--line); color:var(--txt);
     border-radius:9px; width:38px; height:34px; font-size:16px; font-weight:800; font-family:inherit}
@@ -101,6 +143,7 @@
   .legend i{display:inline-block; width:9px; height:9px; border-radius:3px; margin-right:3px; vertical-align:-1px}
   .roadsum{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px}
   .roadsum .pct2{font-size:13px; font-weight:800; color:var(--green)}
+  .autonote{font-size:11px; color:var(--dim); font-weight:700; margin-bottom:6px}
   .ritem{display:flex; align-items:flex-start; gap:10px; padding:9px 2px; border-bottom:1px solid var(--card3)}
   .ritem:last-child{border-bottom:none}
   .cb{width:22px; height:22px; border:2px solid var(--dim); border-radius:7px; flex-shrink:0; margin-top:1px;
@@ -109,7 +152,8 @@
   .ritem .tx{font-size:13px; font-weight:700; line-height:1.45}
   .ritem.done .tx{color:var(--dim); text-decoration:line-through}
   .ritem .wk{display:block; font-size:10px; color:var(--amber); font-weight:800; margin-top:1px}
-  .ritem.done .wk{color:var(--dim)}
+  .ritem .pg{display:block; font-size:10px; color:var(--cyan); font-weight:800; margin-top:1px}
+  .ritem.done .wk,.ritem.done .pg{color:var(--dim)}
   .tips li{font-size:12px; line-height:1.7; color:var(--txt); font-weight:600;
     list-style:none; padding-left:18px; position:relative; margin-bottom:4px}
   .tips li::before{content:"→"; position:absolute; left:0; color:var(--cyan); font-weight:800}
@@ -123,63 +167,97 @@
   footer{text-align:center; color:var(--dim); font-size:10px; padding:10px 0 2px}
   .tab{display:none}
   .tab.on{display:block}
-  .overlay{position:fixed; inset:0; background:rgba(9,11,14,.94); display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:16px; z-index:10; padding:24px; text-align:center}
-  .overlay p{color:var(--sub); font-size:13px; line-height:1.8}
-  .overlay .pbtn.main{max-width:220px; width:100%; font-size:17px; padding:16px 0}
-  .hidden{display:none}
+  .view{display:none}
+  .view.on{display:block}
 </style>
 </head>
 <body>
 
-<div class="overlay" id="overlay">
-  <h1>🎧 耳トレ <span>| kedy</span></h1>
-  <p>カデンツ（伴奏）でキーを感じたあとの1音が<br>スケールの何番目かを当てる。<br>回答後はボタンタップで聴き比べできる<br>（出題と同じ高さで鳴る）。<br>音量を上げてスタート。</p>
-  <button class="pbtn main" id="startBtn">▶ スタート</button>
-</div>
-
 <header>
-  <h1>🎧 耳トレ</h1>
+  <h1>mimitore <span>🎧</span></h1>
   <div class="chips">
     <div class="chip">今日 <b id="scoreToday">0/0</b></div>
-    <div class="chip fire">🔥 <b id="streak">0</b></div>
+    <div class="chip fire">🔥 <b id="dstreak">0日</b></div>
   </div>
 </header>
 
+<!-- ============ トレ ============ -->
 <div class="tab on" id="tab-train">
-  <div class="goal">
-    <div class="row"><span>🎯 今日の目標</span><b id="goalTxt">0 / 20問</b></div>
-    <div class="gbar"><i id="goalBar" style="width:0%"></i></div>
-  </div>
-  <div class="settings">
-    <div class="seg" id="segScale">
-      <button data-s="major" class="on">メジャー</button>
-      <button data-s="minor">マイナー</button>
+
+  <!-- ホーム -->
+  <div class="view on" id="view-home">
+    <div class="goal">
+      <div class="row"><span>🎯 今日の目標</span><b id="goalTxt">0 / 20問</b></div>
+      <div class="gbar"><i id="goalBar" style="width:0%"></i></div>
     </div>
-    <div class="seg lv" id="segLv">
-      <button data-l="1" class="on">Lv1</button>
-      <button data-l="2">Lv2</button>
-      <button data-l="3">Lv3</button>
-      <button data-l="4">Lv4</button>
+    <div class="settings">
+      <div class="segrow">
+        <div class="seg mode" id="segMode">
+          <button data-m="melody" class="on">🎵 単音</button>
+          <button data-m="chord">🎹 コード</button>
+        </div>
+      </div>
+      <div class="segrow">
+        <div class="seg" id="segScale">
+          <button data-s="major" class="on">メジャー</button>
+          <button data-s="minor">マイナー</button>
+        </div>
+        <div class="seg lv" id="segLv">
+          <button data-l="1" class="on">Lv1</button>
+          <button data-l="2">Lv2</button>
+          <button data-l="3">Lv3</button>
+          <button data-l="4">Lv4</button>
+        </div>
+      </div>
+    </div>
+    <button class="startbtn" id="startBtn">▶ 10問はじめる</button>
+    <div class="poolcap" id="poolCap"></div>
+    <div class="panel">
+      <h2>📖 今日のセッション</h2>
+      <div id="sessList"></div>
+    </div>
+    <div class="panel">
+      <h2>📊 弱点ワースト3（このモード）</h2>
+      <div id="weakTop"></div>
     </div>
   </div>
-  <div class="stage">
-    <div class="keyname">キー：<b id="keyName">--</b></div>
-    <div class="status" id="status">▶で問題スタート</div>
-    <div class="playrow">
-      <button class="pbtn main" id="playBtn">▶ 問題を再生</button>
-      <button class="pbtn sub" id="noteBtn">🔁 音だけ</button>
+
+  <!-- 出題 -->
+  <div class="view" id="view-quiz">
+    <div class="qhead">
+      <span class="qn" id="qNum">問題 1/10</span>
+      <div class="segbar" id="segBar"></div>
+      <button class="endbtn" id="endBtn">⏸ ここまで</button>
     </div>
+    <div class="stage">
+      <div class="keyname" id="keyName">--</div>
+      <div class="status" id="status">🎧 聴いて当てて</div>
+      <div class="playrow">
+        <button class="pbtn main" id="playBtn">🔊 もう一回</button>
+        <button class="pbtn sub" id="noteBtn">🔁 音だけ</button>
+      </div>
+    </div>
+    <div class="answers" id="answers"></div>
+    <button class="nextbtn off" id="nextBtn">次の問題 →</button>
+    <div class="hint" id="hint"></div>
   </div>
-  <div class="answers" id="answers"></div>
-  <button class="nextbtn off" id="nextBtn">次の問題 →</button>
-  <div class="hint" id="hint">💡 苦手な音ほど出やすくなる（弱点優先出題）</div>
-  <div class="panel">
-    <h2>📊 音ごとの正答率（このスケールの累計）</h2>
-    <div id="weakRows"></div>
+
+  <!-- 結果 -->
+  <div class="view" id="view-result">
+    <div class="score">
+      <div class="pctbig" id="resPct">--%</div>
+      <div class="sub2" id="resSub"></div>
+    </div>
+    <div class="panel">
+      <h2>📋 内訳（タップで音を再確認）</h2>
+      <div id="resRows"></div>
+    </div>
+    <div class="rbtns" id="resBtns"></div>
   </div>
+
 </div>
 
+<!-- ============ 記録 ============ -->
 <div class="tab" id="tab-cal">
   <div class="calnav">
     <button id="calPrev">‹</button>
@@ -200,40 +278,42 @@
   </div>
 </div>
 
+<!-- ============ ロードマップ ============ -->
 <div class="tab" id="tab-road">
   <div class="panel">
     <div class="roadsum"><h2>🗺 全体の進み具合</h2><span class="pct2" id="roadPct">0%</span></div>
     <div class="gbar"><i id="roadBar" style="width:0%"></i></div>
+    <div class="autonote" style="margin-top:8px">🤖 成績から自動で✓が付く（各30問以上たまってから判定）。手動タップも可。</div>
   </div>
   <div class="panel">
-    <h2>🎧 耳トレ（相対音感）— タップで✓</h2>
+    <h2>🎧 単音（相対音感）</h2>
     <div id="roadEar"></div>
   </div>
   <div class="panel">
-    <h2>🎹 理論（FLで手を動かす）— タップで✓</h2>
+    <h2>🎹 コード（響きの理論）</h2>
     <div id="roadTheory"></div>
   </div>
   <div class="panel">
     <h2>💡 効率のコツ</h2>
     <ul class="tips">
       <li>毎日10分 ＞ 週末1時間。カレンダーの緑を絶やさない</li>
-      <li>間違えたら必ず「自分の答え↔正解」を聴き比べる（回答後にボタンタップで鳴る）</li>
-      <li>正答率85%超えで次のLvへ。90%超えて退屈なら即上げる</li>
-      <li>耳トレ後にFLを開いて、聴き取った音を1フレーズ打ち込むと定着が段違い</li>
-      <li>理論は暗記しない。進行1つ覚えたらその日のうちにループを1本作る</li>
+      <li>間違えたら結果画面でタップして聴き直す。「間違いだけ復習」で即もう1周</li>
+      <li>85%超えで次のLvへ。90%超えて退屈なら即上げる</li>
+      <li>コードモードの響きの聴き分け＝ダイアトニックの理論そのもの。ビートのコード選びに直結する</li>
     </ul>
   </div>
 </div>
 
-<footer>2026.7.11 v3</footer>
+<footer>2026.7.11 v4</footer>
 
 <nav>
-  <button class="on" data-t="train"><span>🎧</span>トレ</button>
+  <button class="on" data-t="train"><span>🏠</span>ホーム</button>
   <button data-t="cal"><span>📅</span>記録</button>
   <button data-t="road"><span>🗺</span>ロードマップ</button>
 </nav>
 
 <script>
+// ---------- storage ----------
 const store = {
   mem: {},
   get(k, d){ try{ const v = localStorage.getItem(k); return v===null ? d : JSON.parse(v); }catch(e){ return (k in this.mem) ? this.mem[k] : d; } },
@@ -242,28 +322,47 @@ const store = {
 const dkey = d => d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 const todayStr = () => dkey(new Date());
 
+// ---------- 音楽データ ----------
 const MAJOR = [0,2,4,5,7,9,11];
 const MINOR = [0,2,3,5,7,8,10];
 const LBL_MAJ = ['ド','レ','ミ','ファ','ソ','ラ','シ'];
 const LBL_MIN = ['ド','レ','ミ♭','ファ','ソ','ラ♭','シ♭'];
 const LEVEL_POOL = {1:[0,2,4], 2:[0,1,2,3,4], 3:[0,1,2,3,4,5,6], 4:[0,1,2,3,4,5,6]};
 const KEY_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-const GOAL = 20;
-const HINT_DEFAULT = '💡 苦手な音ほど出やすくなる（弱点優先出題）';
-const HINT_REVIEW  = '💡 タップした音は出題と同じ高さで鳴る（聴き比べ用）';
+const CHORDS = {
+  maj:{l:'メジャー', iv:[0,4,7]},
+  min:{l:'マイナー', iv:[0,3,7]},
+  dim:{l:'ディミニッシュ', iv:[0,3,6]},
+  maj7:{l:'メジャー7', iv:[0,4,7,11]},
+  m7:{l:'マイナー7', iv:[0,3,7,10]},
+  dom7:{l:'セブンス', iv:[0,4,7,10]}
+};
+const CH_POOL = {1:['maj','min'], 2:['maj','min','dim'], 3:['maj7','m7','dom7'], 4:['maj','min','dim','maj7','m7','dom7']};
+const SET_N = 10, GOAL = 20;
+const HINT_Q = '💡 間違えても回答後にタップで聴き比べできる';
+const HINT_REVIEW = '💡 タップした音は出題と同じ高さで鳴る（聴き比べ用）';
+
+// ---------- state ----------
+const z = () => ({t:0,c:0});
+const mkPer = () => Array.from({length:7}, z);
+const mkPerC = () => { const o={}; Object.keys(CHORDS).forEach(k=>o[k]=z()); return o; };
+const lvz = () => ({1:z(),2:z(),3:z(),4:z()});
+const mkStats = () => ({melody:{major:lvz(),minor:lvz()}, chord:lvz()});
 
 const st = {
-  scale:'major', level:1,
-  key:57, targetDeg:null, targetMidi:null, octShift:0,
-  answered:true, lastDeg:null,
+  view:'home',
+  pref: store.get('mt_pref', {mode:'melody', scale:'major', level:1}),
   hist: store.get('mt_hist', {}),
-  streak: store.get('mt_streak', 0),
-  per: store.get('mt_per2', {major:mkPer(), minor:mkPer()}),
+  per:  store.get('mt_per2', {major:mkPer(), minor:mkPer()}),
+  perC: store.get('mt_perC', mkPerC()),
+  stats: store.get('mt_stats', mkStats()),
+  sessions: store.get('mt_sess', {}),
   road: store.get('mt_road', {}),
+  ses: null,
   calY: new Date().getFullYear(), calM: new Date().getMonth()
 };
-function mkPer(){ return Array.from({length:7},()=>({t:0,c:0})); }
 
+// ---------- audio ----------
 let ctx = null, live = [];
 const AC = () => ctx || (ctx = new (window.AudioContext||window.webkitAudioContext)());
 const freq = m => 440*Math.pow(2,(m-69)/12);
@@ -284,181 +383,353 @@ function pluck(midi, t, dur=0.9, vol=0.25){
 function stopAll(){ live.forEach(o=>{ try{o.stop(0)}catch(e){} }); live = []; }
 document.addEventListener('visibilitychange', () => { if(document.hidden) stopAll(); });
 
-const chordAt = (offs, t, dur) => offs.forEach(o => pluck(st.key+o, t, dur, 0.14));
-function cadence(t0=0){
-  const maj = st.scale==='major';
+function cadence(key, scaleName, t0=0){
+  const maj = scaleName==='major';
   const seq = maj
     ? [[0,4,7],[5,9,12],[7,11,14],[0,4,7]]
     : [[0,3,7],[5,8,12],[7,11,14],[0,3,7]];
-  seq.forEach((ch,i)=> chordAt(ch, t0+i*0.5, 0.55));
+  seq.forEach((ch,i)=> ch.forEach(o => pluck(key+o, t0+i*0.5, 0.55, 0.14)));
   return t0 + seq.length*0.5;
 }
+function playChordQ(q, t=0.05){ CHORDS[q.ch].iv.forEach(o => pluck(q.root+o, t, 1.4, 0.2)); }
 
+// ---------- helpers ----------
 const $ = id => document.getElementById(id);
-const scaleArr = () => st.scale==='major' ? MAJOR : MINOR;
-const labels   = () => st.scale==='major' ? LBL_MAJ : LBL_MIN;
-const perNow   = () => st.per[st.scale];
+const scArr = s => s==='major' ? MAJOR : MINOR;
+const lbls  = s => s==='major' ? LBL_MAJ : LBL_MIN;
+const acc = s => s.t ? Math.round(s.c/s.t*100) : 0;
+const sum2 = (a,b) => ({t:a.t+b.t, c:a.c+b.c});
 const todayRec = () => st.hist[todayStr()] || {t:0,c:0};
-
-function renderAnswers(){
-  const pool = LEVEL_POOL[st.level];
-  $('answers').innerHTML = labels().map((l,i)=>
-    `<button class="ans ${pool.includes(i)?'':'hide'}" data-d="${i}">${l}<small>${i+1}</small></button>`
-  ).join('');
-  document.querySelectorAll('.ans').forEach(b => b.onclick = () => onAns(+b.dataset.d, b));
-}
-function renderChips(){
-  const r = todayRec();
-  const p = r.t ? Math.round(r.c/r.t*100) : 0;
-  $('scoreToday').textContent = `${r.c}/${r.t}${r.t?`（${p}%）`:''}`;
-  $('streak').textContent = st.streak;
-  $('goalTxt').textContent = `${r.t} / ${GOAL}問`;
-  const w = Math.min(100, r.t/GOAL*100);
-  $('goalBar').style.width = w+'%';
-  $('goalBar').className = w>=100 ? 'done' : '';
-}
-function renderWeak(){
-  $('weakRows').innerHTML = labels().map((l,i)=>{
-    const {t,c} = perNow()[i];
-    const p = t ? Math.round(c/t*100) : null;
-    const cls = p===null ? '' : p<60 ? 'low' : p<85 ? 'mid' : '';
-    return `<div class="wrow"><span class="lbl">${l}</span>
-      <div class="wbar"><i class="${cls}" style="width:${p??0}%"></i></div>
-      <span class="pct">${p===null?'--':p+'%・'+t+'問'}</span></div>`;
-  }).join('');
-}
-function renderKey(){
-  $('keyName').textContent = KEY_NAMES[st.key%12] + (st.scale==='major'?' メジャー':' マイナー');
-}
-function setStatus(msg, cls=''){ const s = $('status'); s.textContent = msg; s.className = 'status '+cls; }
-
+const cur = () => st.ses ? st.ses.qs[st.ses.i] : null;
 const randKey = () => 53 + Math.floor(Math.random()*12);
-function pickDeg(pool){
-  const per = perNow();
+const randRoot = () => 48 + Math.floor(Math.random()*15);
+function saveAll(){
+  store.set('mt_pref', st.pref); store.set('mt_hist', st.hist);
+  store.set('mt_per2', st.per); store.set('mt_perC', st.perC);
+  store.set('mt_stats', st.stats); store.set('mt_sess', st.sessions);
+  store.set('mt_road', st.road);
+}
+
+// ---------- 出題（弱点優先） ----------
+function pickDeg(pool, scale, last){
+  const per = st.per[scale];
   const ws = pool.map(d => {
     const {t,c} = per[d];
-    const acc = t>=3 ? c/t : 0.7;
-    let w = 1 + (1-acc)*2.5;
-    if(d===st.lastDeg && pool.length>1) w *= 0.25;
+    const a = t>=3 ? c/t : 0.7;
+    let w = 1 + (1-a)*2.5;
+    if(d===last && pool.length>1) w *= 0.25;
     return w;
   });
   let r = Math.random() * ws.reduce((a,b)=>a+b,0);
   for(let i=0;i<pool.length;i++){ r -= ws[i]; if(r<=0) return pool[i]; }
   return pool[pool.length-1];
 }
-function newQuestion(){
-  stopAll();
-  if(st.level===4) st.key = randKey();
-  const pool = LEVEL_POOL[st.level];
-  st.targetDeg = pickDeg(pool);
-  st.lastDeg = st.targetDeg;
-  st.octShift = (st.level>=3 && Math.random()<0.35) ? 12 : 0; // Lv1〜2は1オクターブ固定
-  st.targetMidi = st.key + scaleArr()[st.targetDeg] + st.octShift;
-  st.answered = false;
-  renderKey();
-  $('nextBtn').classList.add('off');
-  $('hint').textContent = HINT_DEFAULT;
-  document.querySelectorAll('.ans').forEach(b => b.classList.remove('correct','wrong'));
-  setStatus('🎧 カデンツ → 1音を当てて');
-  const end = cadence(0.1);
-  pluck(st.targetMidi, end+0.4, 1.3, 0.3);
+function pickChord(pool, last){
+  const ws = pool.map(k => {
+    const {t,c} = st.perC[k];
+    const a = t>=3 ? c/t : 0.7;
+    let w = 1 + (1-a)*2.5;
+    if(k===last && pool.length>1) w *= 0.25;
+    return w;
+  });
+  let r = Math.random() * ws.reduce((a,b)=>a+b,0);
+  for(let i=0;i<pool.length;i++){ r -= ws[i]; if(r<=0) return pool[i]; }
+  return pool[pool.length-1];
 }
-function replayNote(){ if(st.targetMidi!==null){ stopAll(); pluck(st.targetMidi, 0.05, 1.3, 0.3); } }
 
-// 聴き比べ用：タップした度数を「出題の音に一番近い高さ」で返す
-function reviewMidi(deg){
-  const base = st.key + scaleArr()[deg];
-  let best = base, bd = Math.abs(base - st.targetMidi);
+// ---------- セッション ----------
+function beginSet(mode, scale, lv, qs, rv){
+  st.ses = {mode, scale, lv, qs, i:0, rv:!!rv};
+  showView('quiz');
+  renderAnswerBtns();
+  renderQuiz();
+  playQ();
+}
+function startFromHome(){
+  AC().resume();
+  const p = st.pref;
+  const qs = [];
+  if(p.mode==='melody'){
+    let key = randKey(), last = null;              // セットごとに新キー
+    const pool = LEVEL_POOL[p.level], sc = scArr(p.scale);
+    for(let n=0;n<SET_N;n++){
+      if(p.level===4) key = randKey();             // Lv4は毎問キー変更
+      const deg = pickDeg(pool, p.scale, last); last = deg;
+      const oct = (p.level>=3 && Math.random()<0.35) ? 12 : 0;
+      qs.push({key, deg, midi:key+sc[deg]+oct, ans:null, ok:null});
+    }
+  } else {
+    let last = null;
+    for(let n=0;n<SET_N;n++){
+      const ch = pickChord(CH_POOL[p.level], last); last = ch;
+      qs.push({root:randRoot(), ch, ans:null, ok:null});
+    }
+  }
+  beginSet(p.mode, p.scale, p.level, qs, false);
+}
+function startReview(){
+  const s = st.ses;
+  const qs = s.qs.filter(q=>!q.ok).map(q => s.mode==='melody'
+    ? {key:q.key, deg:q.deg, midi:q.midi, ans:null, ok:null}
+    : {root:q.root, ch:q.ch, ans:null, ok:null});
+  if(!qs.length) return;
+  beginSet(s.mode, s.scale, s.lv, qs, true);
+}
+function playQ(){
+  stopAll();
+  const q = cur(); if(!q) return;
+  if(st.ses.mode==='melody'){
+    const end = cadence(q.key, st.ses.scale, 0.1);
+    pluck(q.midi, end+0.4, 1.3, 0.3);
+  } else playChordQ(q, 0.1);
+}
+function replayNote(){
+  stopAll();
+  const q = cur(); if(!q) return;
+  if(st.ses.mode==='melody') pluck(q.midi, 0.05, 1.3, 0.3);
+  else playChordQ(q);
+}
+function reviewMidi(q, deg){
+  const base = q.key + scArr(st.ses.scale)[deg];
+  let best = base, bd = Math.abs(base - q.midi);
   [base-12, base+12, base+24].forEach(m => {
-    const d = Math.abs(m - st.targetMidi);
+    const d = Math.abs(m - q.midi);
     if(d < bd){ best = m; bd = d; }
   });
   return best;
 }
-function onAns(deg, btn){
-  if(!st.answered){ answer(deg); return; }
+function onAns(val, btn){
+  const q = cur(); if(!q) return;
+  if(q.ok===null){ answer(val); return; }
+  // 聴き比べ（同じ高さ／同じルート）
   stopAll();
-  pluck(reviewMidi(deg), 0.05, 1.1, 0.3);
+  if(st.ses.mode==='melody') pluck(reviewMidi(q, +val), 0.05, 1.1, 0.3);
+  else CHORDS[val].iv.forEach(o => pluck(q.root+o, 0.05, 1.2, 0.2));
   btn.classList.add('pulse');
   setTimeout(()=>btn.classList.remove('pulse'), 180);
 }
-function answer(deg){
-  st.answered = true;
-  const ok = deg === st.targetDeg;
+function answer(val){
+  const s = st.ses, q = cur();
+  const ok = s.mode==='melody' ? +val===q.deg : val===q.ch;
+  q.ans = s.mode==='melody' ? +val : val;
+  q.ok = ok;
+  // 記録
   const k = todayStr();
-  const r = st.hist[k] || {t:0,c:0};
-  r.t++; if(ok) r.c++;
-  st.hist[k] = r;
-  perNow()[st.targetDeg].t++;
-  if(ok){ perNow()[st.targetDeg].c++; st.streak++; } else st.streak = 0;
-  store.set('mt_hist', st.hist); store.set('mt_per2', st.per); store.set('mt_streak', st.streak);
+  const r = st.hist[k] || {t:0,c:0}; r.t++; if(ok) r.c++; st.hist[k] = r;
+  if(s.mode==='melody'){ const p = st.per[s.scale][q.deg]; p.t++; if(ok) p.c++; }
+  else { const p = st.perC[q.ch]; p.t++; if(ok) p.c++; }
+  const box = s.mode==='melody' ? st.stats.melody[s.scale][s.lv] : st.stats.chord[s.lv];
+  box.t++; if(ok) box.c++;
+  saveAll(); autoRoad();
+  // UI
   document.querySelectorAll('.ans').forEach(b=>{
-    const d = +b.dataset.d;
-    if(d===st.targetDeg) b.classList.add('correct');
-    else if(d===deg) b.classList.add('wrong');
+    const v = b.dataset.v;
+    const isCorrect = s.mode==='melody' ? +v===q.deg : v===q.ch;
+    const isPicked  = s.mode==='melody' ? +v===q.ans : v===q.ans;
+    if(isCorrect) b.classList.add('correct');
+    else if(isPicked) b.classList.add('wrong');
   });
-  setStatus(ok ? '✅ 正解！タップで聴き比べできる' : `❌ 正解は「${labels()[st.targetDeg]}」→ 聴き比べてみ`, ok?'ok':'ng');
+  const cl = s.mode==='melody' ? lbls(s.scale)[q.deg] : CHORDS[q.ch].l;
+  setStatus(ok ? '✅ 正解！タップで聴き比べできる' : `❌ 正解は「${cl}」→ 聴き比べてみ`, ok?'ok':'ng');
   $('hint').textContent = HINT_REVIEW;
-  $('nextBtn').classList.remove('off');
-  renderChips(); renderWeak();
+  const nb = $('nextBtn');
+  nb.textContent = (s.i >= s.qs.length-1) ? '結果を見る →' : '次の問題 →';
+  nb.classList.remove('off');
+  renderChips();
+}
+function next(){
+  stopAll();
+  const s = st.ses;
+  s.i++;
+  if(s.i >= s.qs.length) finishSet();
+  else { renderQuiz(); playQ(); }
+}
+function endEarly(){
+  stopAll();
+  const s = st.ses;
+  const done = s.qs.filter(q=>q.ok!==null);
+  if(!done.length){ goHome(); return; }
+  s.qs = done; s.i = done.length;
+  finishSet();
+}
+function finishSet(){
+  const s = st.ses;
+  const t = s.qs.length, c = s.qs.filter(q=>q.ok).length;
+  const k = todayStr();
+  (st.sessions[k] = st.sessions[k] || []).push({ts:Date.now(), mode:s.mode, scale:s.scale, lv:s.lv, c, t, rv:s.rv});
+  // 30日より古い日を掃除
+  const lim = Date.now() - 30*86400000;
+  Object.keys(st.sessions).forEach(dk => {
+    const [y,m,d] = dk.split('-').map(Number);
+    if(new Date(y, m-1, d).getTime() < lim) delete st.sessions[dk];
+  });
+  saveAll();
+  showView('result');
+  renderResult();
+}
+function goHome(){
+  stopAll();
+  st.ses = null;
+  showView('home');
+  renderHome();
+}
+function showView(v){
+  st.view = v;
+  ['home','quiz','result'].forEach(x => $('view-'+x).classList.toggle('on', x===v));
 }
 
-function renderCal(){
-  const y = st.calY, m = st.calM;
-  $('calMon').textContent = `${y}年${m+1}月`;
-  const first = new Date(y, m, 1).getDay();
-  const days = new Date(y, m+1, 0).getDate();
-  const tk = todayStr();
-  let html = ['日','月','火','水','木','金','土'].map(d=>`<div class="dow">${d}</div>`).join('');
-  for(let i=0;i<first;i++) html += `<div class="day blank"></div>`;
-  let monDays = 0, monQ = 0;
-  for(let d=1; d<=days; d++){
-    const k = `${y}-${m+1}-${d}`;
-    const r = st.hist[k];
-    const t = r ? r.t : 0;
-    if(t>0){ monDays++; monQ += t; }
-    const lv = t===0 ? '' : t<10 ? 'lv1' : t<GOAL ? 'lv2' : 'lv3';
-    const acc = r && r.t ? Math.round(r.c/r.t*100) : null;
-    html += `<div class="day ${lv} ${k===tk?'today':''}">
-      <span class="n">${d}</span>
-      <span class="q">${t>0 ? t+'問 '+acc+'%' : ''}</span></div>`;
+// ---------- render ----------
+function setStatus(msg, cls=''){ const s = $('status'); s.textContent = msg; s.className = 'status '+cls; }
+function renderChips(){
+  const r = todayRec();
+  const p = r.t ? Math.round(r.c/r.t*100) : 0;
+  $('scoreToday').textContent = `${r.c}/${r.t}${r.t?`（${p}%）`:''}`;
+  $('dstreak').textContent = dayStreak()+'日';
+  $('goalTxt').textContent = `${r.t} / ${GOAL}問`;
+  const w = Math.min(100, r.t/GOAL*100);
+  $('goalBar').style.width = w+'%';
+  $('goalBar').className = w>=100 ? 'done' : '';
+}
+function renderHome(){
+  renderChips();
+  const p = st.pref;
+  $('segMode').querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.m===p.mode));
+  $('segScale').querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.s===p.scale));
+  $('segLv').querySelectorAll('button').forEach(b=>b.classList.toggle('on', +b.dataset.l===p.level));
+  $('segScale').style.display = p.mode==='melody' ? 'flex' : 'none';
+  // 出題内容キャプション
+  let cap;
+  if(p.mode==='melody'){
+    const pool = LEVEL_POOL[p.level];
+    cap = p.level<=2 ? pool.map(i=>lbls(p.scale)[i]).join('・')
+        : p.level===3 ? '全7音（高い方も出る）' : '全7音＋毎問キー変更';
+  } else cap = CH_POOL[p.level].map(k=>CHORDS[k].l).join(' / ');
+  $('poolCap').textContent = '出題：'+cap+'（キーはセットごとに変わる）';
+  // 今日のセッション
+  const list = (st.sessions[todayStr()]||[]).slice().reverse();
+  $('sessList').innerHTML = list.length ? list.map(s=>{
+    const d = new Date(s.ts);
+    const hm = d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+    const tag = (s.mode==='melody' ? '🎵'+(s.scale==='major'?'M':'m') : '🎹') + '・Lv'+s.lv + (s.rv?'・復習':'');
+    const pc = Math.round(s.c/s.t*100);
+    const cls = pc>=85?'hi':pc>=60?'mid':'lo';
+    return `<div class="srow"><span class="l">${hm}　${tag}</span><span class="r ${cls}">${s.c}/${s.t}（${pc}%）</span></div>`;
+  }).join('') : '<div class="empty">まだ今日のセッションはない。1セット目いこう</div>';
+  // 弱点ワースト3
+  let rows;
+  if(p.mode==='melody'){
+    rows = lbls(p.scale).map((l,i)=>({l, s:st.per[p.scale][i]}));
+  } else {
+    rows = Object.keys(CHORDS).map(k=>({l:CHORDS[k].l, s:st.perC[k]}));
   }
-  $('calGrid').innerHTML = html;
-  $('sumDays').textContent = monDays+'日';
-  $('sumQ').textContent = monQ+'問';
-  $('sumStreak').textContent = dayStreak()+'日';
+  rows = rows.filter(r=>r.s.t>=5).sort((a,b)=>acc(a.s)-acc(b.s)).slice(0,3);
+  $('weakTop').innerHTML = rows.length ? rows.map(r=>{
+    const p2 = acc(r.s);
+    const cls = p2<60?'low':p2<85?'mid':'';
+    return `<div class="wrow"><span class="lbl">${r.l}</span>
+      <div class="wbar"><i class="${cls}" style="width:${p2}%"></i></div>
+      <span class="pct">${p2}%・${r.s.t}問</span></div>`;
+  }).join('') : '<div class="empty">5問以上たまると表示される</div>';
 }
-function dayStreak(){
-  let n = 0;
-  const d = new Date();
-  if(!(st.hist[dkey(d)]?.t > 0)) d.setDate(d.getDate()-1);
-  while(st.hist[dkey(d)]?.t > 0){ n++; d.setDate(d.getDate()-1); }
-  return n;
+function renderAnswerBtns(){
+  const s = st.ses, box = $('answers');
+  if(s.mode==='melody'){
+    box.className = 'answers';
+    const pool = LEVEL_POOL[s.lv];
+    box.innerHTML = lbls(s.scale).map((l,i)=>
+      `<button class="ans ${pool.includes(i)?'':'hide'}" data-v="${i}">${l}<small>${i+1}</small></button>`).join('');
+  } else {
+    box.className = 'answers g2';
+    box.innerHTML = CH_POOL[s.lv].map(k=>
+      `<button class="ans" data-v="${k}">${CHORDS[k].l}</button>`).join('');
+  }
+  box.querySelectorAll('.ans').forEach(b => b.onclick = () => onAns(b.dataset.v, b));
 }
-$('calPrev') && ($('calPrev').onclick = () => { st.calM--; if(st.calM<0){st.calM=11; st.calY--;} renderCal(); });
-$('calNext') && ($('calNext').onclick = () => { st.calM++; if(st.calM>11){st.calM=0; st.calY++;} renderCal(); });
+function renderQuiz(){
+  const s = st.ses, q = cur();
+  $('qNum').textContent = `問題 ${s.i+1}/${s.qs.length}`;
+  $('segBar').innerHTML = s.qs.map((x,i)=>
+    `<i class="${i<s.i?'d':i===s.i?'c':''}"></i>`).join('');
+  $('keyName').innerHTML = s.mode==='melody'
+    ? `キー：<b>${KEY_NAMES[q.key%12]} ${s.scale==='major'?'メジャー':'マイナー'}</b>${s.rv?'（復習）':''}`
+    : `🎹 コードの響きを当てる${s.rv?'（復習）':''}`;
+  setStatus('🎧 聴いて当てて');
+  $('hint').textContent = HINT_Q;
+  $('noteBtn').classList.toggle('hide', s.mode!=='melody');
+  $('nextBtn').classList.add('off');
+  document.querySelectorAll('.ans').forEach(b => b.classList.remove('correct','wrong'));
+}
+function renderResult(){
+  const s = st.ses;
+  const t = s.qs.length, c = s.qs.filter(q=>q.ok).length;
+  const pc = Math.round(c/t*100);
+  const el = $('resPct');
+  el.textContent = pc+'%';
+  el.className = 'pctbig ' + (pc>=85?'hi':pc>=60?'mid':'lo');
+  $('resSub').textContent = `${c}/${t}問正解` + (s.rv?'（復習セット）':'') + (pc>=85?'　🎉合格ライン！':'');
+  $('resRows').innerHTML = s.qs.map((q,i)=>{
+    const cl = s.mode==='melody' ? lbls(s.scale)[q.deg] : CHORDS[q.ch].l;
+    const al = q.ok ? '' : (s.mode==='melody' ? lbls(s.scale)[q.ans] : CHORDS[q.ans].l);
+    const key = s.mode==='melody' ? KEY_NAMES[q.key%12] : '';
+    return `<div class="rrow" data-i="${i}">
+      <span class="no">${i+1}</span><span class="mk">${q.ok?'✅':'❌'}</span>
+      <span class="tx"><b>${cl}</b>${q.ok?'':`<small>あなた：${al}</small>`}</span>
+      <span class="sp">${key} 🔊</span></div>`;
+  }).join('');
+  $('resRows').querySelectorAll('.rrow').forEach(row => row.onclick = () => {
+    stopAll();
+    const q = s.qs[+row.dataset.i];
+    if(s.mode==='melody') pluck(q.midi, 0.05, 1.3, 0.3);
+    else playChordQ(q);
+  });
+  const wrongs = s.qs.filter(q=>!q.ok).length;
+  $('resBtns').innerHTML =
+    (wrongs ? `<button class="pbtn main" id="revBtn">🔁 間違いだけ復習（${wrongs}問）</button>` : '') +
+    `<button class="pbtn ${wrongs?'sub':'main'}" id="moreBtn">▶ もう1セット</button>
+     <button class="pbtn ghost" id="homeBtn">🏠 ホームへ</button>`;
+  const rb = $('revBtn'); if(rb) rb.onclick = startReview;
+  $('moreBtn').onclick = startFromHome;
+  $('homeBtn').onclick = goHome;
+  renderChips();
+}
 
+// ---------- ロードマップ（自動判定） ----------
+const pv = s => `${acc(s)}%・${s.t}問`;
 const ROAD = {
   ear: [
-    {id:'e1', t:'Lv1 メジャー：85%を3日続ける', w:'1〜2週目'},
-    {id:'e2', t:'Lv2 メジャー：85%到達', w:'2〜3週目'},
-    {id:'e3', t:'Lv1〜2 マイナー：85%到達', w:'3〜5週目'},
-    {id:'e4', t:'Lv3 両スケール：85%到達', w:'5〜8週目'},
-    {id:'e5', t:'Lv4 ランダムキー：80%到達', w:'2〜3ヶ月'}
+    {id:'e1', t:'単音 メジャーLv1で85%', w:'30問以上', pr:()=>pv(st.stats.melody.major[1])},
+    {id:'e2', t:'単音 メジャーLv2で85%', w:'30問以上', pr:()=>pv(st.stats.melody.major[2])},
+    {id:'e3', t:'単音 マイナーLv1〜2で85%', w:'合計30問以上', pr:()=>pv(sum2(st.stats.melody.minor[1], st.stats.melody.minor[2]))},
+    {id:'e4', t:'単音 Lv3 両スケールで各85%', w:'各30問以上', pr:()=>'M '+pv(st.stats.melody.major[3])+'／m '+pv(st.stats.melody.minor[3])},
+    {id:'e5', t:'単音 Lv4（毎問キー変更）で80%', w:'30問以上', pr:()=>pv(sum2(st.stats.melody.major[4], st.stats.melody.minor[4]))}
   ],
   theory: [
-    {id:'t1', t:'メジャー/マイナースケールを鍵盤で迷わず弾く', w:'1週目'},
-    {id:'t2', t:'ダイアトニックコード7つを鳴らして響きを覚える', w:'2週目'},
-    {id:'t3', t:'定番進行でループ3本作る（i-VI-III-VII / i-VII-VI / 6-4-1-5）', w:'3〜4週目'},
-    {id:'t4', t:'リファレンス曲のキー当て＋1ループ耳コピ', w:'1〜2ヶ月'},
-    {id:'t5', t:'頭の中のメロディをそのまま打ち込みで再現', w:'2〜3ヶ月'}
+    {id:'t1', t:'コードLv1（メジャー/マイナー）85%', w:'30問以上', pr:()=>pv(st.stats.chord[1])},
+    {id:'t2', t:'コードLv2（＋ディミニッシュ）85%', w:'30問以上', pr:()=>pv(st.stats.chord[2])},
+    {id:'t3', t:'コードLv3（maj7/m7/セブンス）85%', w:'30問以上', pr:()=>pv(st.stats.chord[3])},
+    {id:'t4', t:'コードLv4（全6種ミックス）80%', w:'30問以上', pr:()=>pv(st.stats.chord[4])},
+    {id:'t5', t:'好きな曲を流してコードの明暗（メジャー/マイナー）を口で当てる', w:'手動✓', pr:null}
   ]
 };
+function meets(s, p=85, n=30){ return s.t>=n && acc(s)>=p; }
+function autoRoad(){
+  const m = st.stats.melody, c = st.stats.chord;
+  const crit = {
+    e1: meets(m.major[1]), e2: meets(m.major[2]),
+    e3: meets(sum2(m.minor[1], m.minor[2])),
+    e4: meets(m.major[3]) && meets(m.minor[3]),
+    e5: meets(sum2(m.major[4], m.minor[4]), 80),
+    t1: meets(c[1]), t2: meets(c[2]), t3: meets(c[3]), t4: meets(c[4], 80)
+  };
+  let ch = false;
+  Object.keys(crit).forEach(k => { if(crit[k] && !st.road[k]){ st.road[k] = true; ch = true; } });
+  if(ch){ store.set('mt_road', st.road); renderRoad(); }
+}
 function renderRoad(){
   const mk = arr => arr.map(it => `
     <div class="ritem ${st.road[it.id]?'done':''}" data-id="${it.id}">
       <div class="cb">${st.road[it.id]?'✓':''}</div>
-      <div class="tx">${it.t}<span class="wk">目安：${it.w}</span></div>
+      <div class="tx">${it.t}<span class="wk">条件：${it.w}</span>${it.pr?`<span class="pg">📈 いま ${it.pr()}</span>`:''}</div>
     </div>`).join('');
   $('roadEar').innerHTML = mk(ROAD.ear);
   $('roadTheory').innerHTML = mk(ROAD.theory);
@@ -476,31 +747,69 @@ function renderRoad(){
   $('roadBar').className = p>=100 ? 'done' : '';
 }
 
+// ---------- カレンダー ----------
+function renderCal(){
+  const y = st.calY, m = st.calM;
+  $('calMon').textContent = `${y}年${m+1}月`;
+  const first = new Date(y, m, 1).getDay();
+  const days = new Date(y, m+1, 0).getDate();
+  const tk = todayStr();
+  let html = ['日','月','火','水','木','金','土'].map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) html += `<div class="day blank"></div>`;
+  let monDays = 0, monQ = 0;
+  for(let d=1; d<=days; d++){
+    const k = `${y}-${m+1}-${d}`;
+    const r = st.hist[k];
+    const t = r ? r.t : 0;
+    if(t>0){ monDays++; monQ += t; }
+    const lv = t===0 ? '' : t<10 ? 'lv1' : t<GOAL ? 'lv2' : 'lv3';
+    const a = r && r.t ? Math.round(r.c/r.t*100) : null;
+    html += `<div class="day ${lv} ${k===tk?'today':''}">
+      <span class="n">${d}</span>
+      <span class="q">${t>0 ? t+'問 '+a+'%' : ''}</span></div>`;
+  }
+  $('calGrid').innerHTML = html;
+  $('sumDays').textContent = monDays+'日';
+  $('sumQ').textContent = monQ+'問';
+  $('sumStreak').textContent = dayStreak()+'日';
+}
+function dayStreak(){
+  let n = 0;
+  const d = new Date();
+  if(!(st.hist[dkey(d)]?.t > 0)) d.setDate(d.getDate()-1);
+  while(st.hist[dkey(d)]?.t > 0){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+$('calPrev').onclick = () => { st.calM--; if(st.calM<0){st.calM=11; st.calY--;} renderCal(); };
+$('calNext').onclick = () => { st.calM++; if(st.calM>11){st.calM=0; st.calY++;} renderCal(); };
+
+// ---------- events ----------
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   stopAll();
   document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on', x===b));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   $('tab-'+b.dataset.t).classList.add('on');
   if(b.dataset.t==='cal') renderCal();
+  if(b.dataset.t==='road') renderRoad();
+  if(b.dataset.t==='train' && st.view==='home') renderHome();
 });
-
-$('startBtn').onclick = () => { AC().resume(); $('overlay').classList.add('hidden'); newQuestion(); };
-$('playBtn').onclick  = () => newQuestion();
-$('noteBtn').onclick  = () => replayNote();
-$('nextBtn').onclick  = () => newQuestion();
+$('startBtn').onclick = startFromHome;
+$('playBtn').onclick  = playQ;
+$('noteBtn').onclick  = replayNote;
+$('nextBtn').onclick  = next;
+$('endBtn').onclick   = endEarly;
+$('segMode').querySelectorAll('button').forEach(b => b.onclick = () => {
+  st.pref.mode = b.dataset.m; saveAll(); renderHome();
+});
 $('segScale').querySelectorAll('button').forEach(b => b.onclick = () => {
-  st.scale = b.dataset.s;
-  $('segScale').querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
-  st.key = randKey(); renderAnswers(); renderWeak(); newQuestion();
+  st.pref.scale = b.dataset.s; saveAll(); renderHome();
 });
 $('segLv').querySelectorAll('button').forEach(b => b.onclick = () => {
-  st.level = +b.dataset.l;
-  $('segLv').querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
-  renderAnswers(); newQuestion();
+  st.pref.level = +b.dataset.l; saveAll(); renderHome();
 });
 
-st.key = randKey();
-renderAnswers(); renderChips(); renderWeak(); renderKey(); renderRoad();
+// ---------- init ----------
+renderHome(); renderRoad();
 </script>
 </body>
 </html>
