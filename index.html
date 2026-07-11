@@ -22,7 +22,6 @@
     max-width:430px; margin:0 auto; padding:14px 14px 84px;
     min-height:100dvh; user-select:none;
   }
-  /* ===== header ===== */
   header{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
   h1{font-size:19px; font-weight:800}
   h1 span{color:var(--amber)}
@@ -31,7 +30,6 @@
     padding:4px 10px; font-size:12px; font-weight:700; color:var(--sub)}
   .chip b{color:var(--cyan); font-weight:800}
   .chip.fire b{color:var(--amber)}
-  /* ===== goal bar ===== */
   .goal{background:var(--card); border:1px solid var(--line); border-radius:10px;
     padding:8px 12px; margin-bottom:10px}
   .goal .row{display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--sub); margin-bottom:5px}
@@ -39,13 +37,11 @@
   .gbar{height:6px; background:var(--card3); border-radius:4px; overflow:hidden}
   .gbar i{display:block; height:100%; background:var(--amber); border-radius:4px; transition:width .3s}
   .gbar i.done{background:var(--green)}
-  /* ===== settings ===== */
   .settings{display:flex; gap:8px; margin-bottom:10px}
   .seg{display:flex; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; flex:1}
   .seg button{flex:1; background:none; border:none; color:var(--sub); font-size:13px; font-weight:700; padding:9px 0; font-family:inherit}
   .seg button.on{background:var(--amber); color:#151006}
   .seg.lv button.on{background:var(--cyan); color:#03242a}
-  /* ===== stage ===== */
   .stage{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
     padding:16px 14px 14px; text-align:center; margin-bottom:10px}
   .keyname{font-size:12px; color:var(--sub); font-weight:700; margin-bottom:5px}
@@ -59,7 +55,6 @@
   .pbtn:active{transform:scale(.96)}
   .pbtn.main{background:var(--amber); color:#151006}
   .pbtn.sub{background:var(--card2); color:var(--cyan); border:1px solid var(--line)}
-  /* ===== answers ===== */
   .answers{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px}
   .ans{background:var(--card2); border:1px solid var(--line); border-radius:12px; color:var(--txt);
     font-family:inherit; font-size:16px; font-weight:800; padding:12px 0 9px; transition:transform .06s;
@@ -76,7 +71,6 @@
     border-radius:12px; font-family:inherit; font-weight:800; font-size:15px; padding:12px 0; margin-bottom:10px}
   .nextbtn.off{visibility:hidden}
   .hint{font-size:11px; color:var(--dim); text-align:center; margin-bottom:10px; font-weight:700}
-  /* ===== weak ===== */
   .panel{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-bottom:10px}
   .panel h2{font-size:12px; color:var(--sub); font-weight:800; margin-bottom:8px; letter-spacing:.04em}
   .wrow{display:flex; align-items:center; gap:8px; margin-bottom:5px; font-size:12px; font-weight:700}
@@ -86,7 +80,6 @@
   .wbar i.low{background:var(--red)}
   .wbar i.mid{background:var(--amber)}
   .wrow .pct{width:66px; text-align:right; color:var(--sub); font-size:11px}
-  /* ===== calendar ===== */
   .calnav{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
   .calnav button{background:var(--card2); border:1px solid var(--line); color:var(--txt);
     border-radius:9px; width:38px; height:34px; font-size:16px; font-weight:800; font-family:inherit}
@@ -106,7 +99,6 @@
   .calsum .chip{flex:1; text-align:center}
   .legend{display:flex; gap:10px; justify-content:center; margin-top:10px; font-size:10px; color:var(--dim); font-weight:700}
   .legend i{display:inline-block; width:9px; height:9px; border-radius:3px; margin-right:3px; vertical-align:-1px}
-  /* ===== roadmap ===== */
   .roadsum{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px}
   .roadsum .pct2{font-size:13px; font-weight:800; color:var(--green)}
   .ritem{display:flex; align-items:flex-start; gap:10px; padding:9px 2px; border-bottom:1px solid var(--card3)}
@@ -121,7 +113,6 @@
   .tips li{font-size:12px; line-height:1.7; color:var(--txt); font-weight:600;
     list-style:none; padding-left:18px; position:relative; margin-bottom:4px}
   .tips li::before{content:"→"; position:absolute; left:0; color:var(--cyan); font-weight:800}
-  /* ===== nav ===== */
   nav{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px;
     background:var(--card); border-top:1px solid var(--line); display:flex;
     padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
@@ -132,7 +123,6 @@
   footer{text-align:center; color:var(--dim); font-size:10px; padding:10px 0 2px}
   .tab{display:none}
   .tab.on{display:block}
-  /* ===== overlay ===== */
   .overlay{position:fixed; inset:0; background:rgba(9,11,14,.94); display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:16px; z-index:10; padding:24px; text-align:center}
   .overlay p{color:var(--sub); font-size:13px; line-height:1.8}
@@ -144,7 +134,7 @@
 
 <div class="overlay" id="overlay">
   <h1>🎧 耳トレ <span>| kedy</span></h1>
-  <p>カデンツ（伴奏）でキーを感じたあとの1音が<br>スケールの何番目かを当てる。<br>間違えても回答後にタップで聴き比べできる。<br>音量を上げてスタート。</p>
+  <p>カデンツ（伴奏）でキーを感じたあとの1音が<br>スケールの何番目かを当てる。<br>回答後はボタンタップで聴き比べできる<br>（出題と同じ高さで鳴る）。<br>音量を上げてスタート。</p>
   <button class="pbtn main" id="startBtn">▶ スタート</button>
 </div>
 
@@ -156,7 +146,6 @@
   </div>
 </header>
 
-<!-- ===== トレーニング ===== -->
 <div class="tab on" id="tab-train">
   <div class="goal">
     <div class="row"><span>🎯 今日の目標</span><b id="goalTxt">0 / 20問</b></div>
@@ -184,14 +173,13 @@
   </div>
   <div class="answers" id="answers"></div>
   <button class="nextbtn off" id="nextBtn">次の問題 →</button>
-  <div class="hint">💡 苦手な音ほど出やすくなる（弱点優先出題）</div>
+  <div class="hint" id="hint">💡 苦手な音ほど出やすくなる（弱点優先出題）</div>
   <div class="panel">
     <h2>📊 音ごとの正答率（このスケールの累計）</h2>
     <div id="weakRows"></div>
   </div>
 </div>
 
-<!-- ===== カレンダー ===== -->
 <div class="tab" id="tab-cal">
   <div class="calnav">
     <button id="calPrev">‹</button>
@@ -212,7 +200,6 @@
   </div>
 </div>
 
-<!-- ===== ロードマップ ===== -->
 <div class="tab" id="tab-road">
   <div class="panel">
     <div class="roadsum"><h2>🗺 全体の進み具合</h2><span class="pct2" id="roadPct">0%</span></div>
@@ -238,7 +225,7 @@
   </div>
 </div>
 
-<footer>2026.7.11 v2</footer>
+<footer>2026.7.11 v3</footer>
 
 <nav>
   <button class="on" data-t="train"><span>🎧</span>トレ</button>
@@ -247,7 +234,6 @@
 </nav>
 
 <script>
-// ---------- storage（デプロイ先では保存、プレビューではメモリ動作） ----------
 const store = {
   mem: {},
   get(k, d){ try{ const v = localStorage.getItem(k); return v===null ? d : JSON.parse(v); }catch(e){ return (k in this.mem) ? this.mem[k] : d; } },
@@ -256,7 +242,6 @@ const store = {
 const dkey = d => d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 const todayStr = () => dkey(new Date());
 
-// ---------- 音楽データ ----------
 const MAJOR = [0,2,4,5,7,9,11];
 const MINOR = [0,2,3,5,7,8,10];
 const LBL_MAJ = ['ド','レ','ミ','ファ','ソ','ラ','シ'];
@@ -264,21 +249,21 @@ const LBL_MIN = ['ド','レ','ミ♭','ファ','ソ','ラ♭','シ♭'];
 const LEVEL_POOL = {1:[0,2,4], 2:[0,1,2,3,4], 3:[0,1,2,3,4,5,6], 4:[0,1,2,3,4,5,6]};
 const KEY_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const GOAL = 20;
+const HINT_DEFAULT = '💡 苦手な音ほど出やすくなる（弱点優先出題）';
+const HINT_REVIEW  = '💡 タップした音は出題と同じ高さで鳴る（聴き比べ用）';
 
-// ---------- state ----------
 const st = {
   scale:'major', level:1,
   key:57, targetDeg:null, targetMidi:null, octShift:0,
   answered:true, lastDeg:null,
-  hist: store.get('mt_hist', {}),                                   // {'2026-7-11':{t,c}}
-  streak: store.get('mt_streak', 0),                                // 連続正解
-  per: store.get('mt_per2', {major:mkPer(), minor:mkPer()}),        // スケール別の累計
+  hist: store.get('mt_hist', {}),
+  streak: store.get('mt_streak', 0),
+  per: store.get('mt_per2', {major:mkPer(), minor:mkPer()}),
   road: store.get('mt_road', {}),
   calY: new Date().getFullYear(), calM: new Date().getMonth()
 };
 function mkPer(){ return Array.from({length:7},()=>({t:0,c:0})); }
 
-// ---------- audio（鳴っている音は全部管理して止められるように） ----------
 let ctx = null, live = [];
 const AC = () => ctx || (ctx = new (window.AudioContext||window.webkitAudioContext)());
 const freq = m => 440*Math.pow(2,(m-69)/12);
@@ -297,27 +282,24 @@ function pluck(midi, t, dur=0.9, vol=0.25){
   });
 }
 function stopAll(){ live.forEach(o=>{ try{o.stop(0)}catch(e){} }); live = []; }
-// タブを離れたら全部止める（音の重なり防止）
 document.addEventListener('visibilitychange', () => { if(document.hidden) stopAll(); });
 
 const chordAt = (offs, t, dur) => offs.forEach(o => pluck(st.key+o, t, dur, 0.14));
 function cadence(t0=0){
   const maj = st.scale==='major';
   const seq = maj
-    ? [[0,4,7],[5,9,12],[7,11,14],[0,4,7]]      // I-IV-V-I
-    : [[0,3,7],[5,8,12],[7,11,14],[0,3,7]];     // i-iv-V-i（和声的）
+    ? [[0,4,7],[5,9,12],[7,11,14],[0,4,7]]
+    : [[0,3,7],[5,8,12],[7,11,14],[0,3,7]];
   seq.forEach((ch,i)=> chordAt(ch, t0+i*0.5, 0.55));
   return t0 + seq.length*0.5;
 }
 
-// ---------- helpers ----------
 const $ = id => document.getElementById(id);
 const scaleArr = () => st.scale==='major' ? MAJOR : MINOR;
 const labels   = () => st.scale==='major' ? LBL_MAJ : LBL_MIN;
 const perNow   = () => st.per[st.scale];
 const todayRec = () => st.hist[todayStr()] || {t:0,c:0};
 
-// ---------- render ----------
 function renderAnswers(){
   const pool = LEVEL_POOL[st.level];
   $('answers').innerHTML = labels().map((l,i)=>
@@ -350,15 +332,14 @@ function renderKey(){
 }
 function setStatus(msg, cls=''){ const s = $('status'); s.textContent = msg; s.className = 'status '+cls; }
 
-// ---------- 出題（弱点優先の重み付きランダム） ----------
-const randKey = () => 53 + Math.floor(Math.random()*12); // F3〜E4
+const randKey = () => 53 + Math.floor(Math.random()*12);
 function pickDeg(pool){
   const per = perNow();
   const ws = pool.map(d => {
     const {t,c} = per[d];
-    const acc = t>=3 ? c/t : 0.7;        // データ少ない音はやや優先
-    let w = 1 + (1-acc)*2.5;             // 苦手ほど出やすい
-    if(d===st.lastDeg && pool.length>1) w *= 0.25; // 同じ音の連発を抑える
+    const acc = t>=3 ? c/t : 0.7;
+    let w = 1 + (1-acc)*2.5;
+    if(d===st.lastDeg && pool.length>1) w *= 0.25;
     return w;
   });
   let r = Math.random() * ws.reduce((a,b)=>a+b,0);
@@ -371,11 +352,12 @@ function newQuestion(){
   const pool = LEVEL_POOL[st.level];
   st.targetDeg = pickDeg(pool);
   st.lastDeg = st.targetDeg;
-  st.octShift = Math.random()<0.35 ? 12 : 0;
+  st.octShift = (st.level>=3 && Math.random()<0.35) ? 12 : 0; // Lv1〜2は1オクターブ固定
   st.targetMidi = st.key + scaleArr()[st.targetDeg] + st.octShift;
   st.answered = false;
   renderKey();
   $('nextBtn').classList.add('off');
+  $('hint').textContent = HINT_DEFAULT;
   document.querySelectorAll('.ans').forEach(b => b.classList.remove('correct','wrong'));
   setStatus('🎧 カデンツ → 1音を当てて');
   const end = cadence(0.1);
@@ -383,12 +365,20 @@ function newQuestion(){
 }
 function replayNote(){ if(st.targetMidi!==null){ stopAll(); pluck(st.targetMidi, 0.05, 1.3, 0.3); } }
 
-// ---------- 回答 ＆ 聴き比べ ----------
+// 聴き比べ用：タップした度数を「出題の音に一番近い高さ」で返す
+function reviewMidi(deg){
+  const base = st.key + scaleArr()[deg];
+  let best = base, bd = Math.abs(base - st.targetMidi);
+  [base-12, base+12, base+24].forEach(m => {
+    const d = Math.abs(m - st.targetMidi);
+    if(d < bd){ best = m; bd = d; }
+  });
+  return best;
+}
 function onAns(deg, btn){
   if(!st.answered){ answer(deg); return; }
-  // 回答後：タップした音を鳴らして聴き比べ（復習モード）
   stopAll();
-  pluck(st.key + scaleArr()[deg] + st.octShift, 0.05, 1.1, 0.3);
+  pluck(reviewMidi(deg), 0.05, 1.1, 0.3);
   btn.classList.add('pulse');
   setTimeout(()=>btn.classList.remove('pulse'), 180);
 }
@@ -408,11 +398,11 @@ function answer(deg){
     else if(d===deg) b.classList.add('wrong');
   });
   setStatus(ok ? '✅ 正解！タップで聴き比べできる' : `❌ 正解は「${labels()[st.targetDeg]}」→ 聴き比べてみ`, ok?'ok':'ng');
+  $('hint').textContent = HINT_REVIEW;
   $('nextBtn').classList.remove('off');
   renderChips(); renderWeak();
 }
 
-// ---------- カレンダー ----------
 function renderCal(){
   const y = st.calY, m = st.calM;
   $('calMon').textContent = `${y}年${m+1}月`;
@@ -441,12 +431,13 @@ function renderCal(){
 function dayStreak(){
   let n = 0;
   const d = new Date();
-  if(!(st.hist[dkey(d)]?.t > 0)) d.setDate(d.getDate()-1); // 今日まだなら昨日から数える
+  if(!(st.hist[dkey(d)]?.t > 0)) d.setDate(d.getDate()-1);
   while(st.hist[dkey(d)]?.t > 0){ n++; d.setDate(d.getDate()-1); }
   return n;
 }
+$('calPrev') && ($('calPrev').onclick = () => { st.calM--; if(st.calM<0){st.calM=11; st.calY--;} renderCal(); });
+$('calNext') && ($('calNext').onclick = () => { st.calM++; if(st.calM>11){st.calM=0; st.calY++;} renderCal(); });
 
-// ---------- ロードマップ ----------
 const ROAD = {
   ear: [
     {id:'e1', t:'Lv1 メジャー：85%を3日続ける', w:'1〜2週目'},
@@ -485,7 +476,6 @@ function renderRoad(){
   $('roadBar').className = p>=100 ? 'done' : '';
 }
 
-// ---------- タブ ----------
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   stopAll();
   document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on', x===b));
@@ -494,7 +484,6 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   if(b.dataset.t==='cal') renderCal();
 });
 
-// ---------- events ----------
 $('startBtn').onclick = () => { AC().resume(); $('overlay').classList.add('hidden'); newQuestion(); };
 $('playBtn').onclick  = () => newQuestion();
 $('noteBtn').onclick  = () => replayNote();
@@ -510,7 +499,6 @@ $('segLv').querySelectorAll('button').forEach(b => b.onclick = () => {
   renderAnswers(); newQuestion();
 });
 
-// ---------- init ----------
 st.key = randKey();
 renderAnswers(); renderChips(); renderWeak(); renderKey(); renderRoad();
 </script>
